@@ -1,14 +1,17 @@
 <?php
 
+    $response = null;
+    $data = null;
+
 if (!empty($_GET["name"])) {
     $response = file_get_contents("https://api.agify.io?name={$_GET['name']}");
 }
 
+if (!empty($response)) { // Kontrola, či $response nie je false alebo prázdna
+    $data = json_decode($response, true);
+}
 
-$data = json_decode($response, true);
-$age = $data["age"];
-// echo $age;
-
+    $age = $data["age"] ?? null; // Použi null coalescing operator pre zabezpečenie
 
 ?>
 <!DOCTYPE html>
