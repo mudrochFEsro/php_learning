@@ -6,5 +6,16 @@ $parts = explode("/", $path);
 $resource = $parts[4];
 $id = $parts[5] ?? null;
 
-echo $resource . ", " . $id . "<br/>";
-echo $_SERVER["REQUEST_METHOD"];
+
+if ($resource != "tasks") {
+
+    // option 1 :
+    // header("{$_SERVER['SERVER_PROTOCOL']} 404 Not Found");
+
+    // option 2 :
+    http_response_code(404);
+    exit;
+}
+
+
+echo $resource . " " . $id;
