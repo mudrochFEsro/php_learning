@@ -1,5 +1,8 @@
 <?php
 
+// Načíta automatický načítač Composeru, aby bolo možné používať nainštalované balíky a závislosti
+require dirname(__DIR__) . "/vendor/autoload.php";
+
 // Získa cestu URL z požiadavky a rozloží ju na časti
 $path = parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH);
 
@@ -22,9 +25,6 @@ if ($resource !== "tasks") {
     http_response_code(404);
     exit; // Ukončí skript po nastavení 404
 }
-
-// Načíta súbor s definíciou triedy TaskController
-require dirname(__DIR__) . "/src/TaskController.php";
 
 // Vytvorí novú inštanciu TaskController
 $controller = new TaskController;
