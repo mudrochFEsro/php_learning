@@ -7,15 +7,18 @@ $resource = $parts[4];
 $id = $parts[5] ?? null;
 
 
-if ($resource != "tasks") {
+if ($resource !== "tasks") {
 
     // option 1 :
     // header("{$_SERVER['SERVER_PROTOCOL']} 404 Not Found");
 
-    // option 2 :
+    // option 2 better :
     http_response_code(404);
     exit;
 }
 
+require dirname(__DIR__) . "/src/TaskController.php";
 
-echo $resource . " " . $id;
+$controller = new TaskController;
+
+$controller->processRequest($_SERVER['REQUEST_METHOD'], $id);
