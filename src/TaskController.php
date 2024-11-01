@@ -13,18 +13,21 @@ class TaskController
      * @param string $method HTTP metóda požiadavky ("GET", "POST", "PATCH", "DELETE")
      * @param mixed $id Identifikátor záznamu; ak je null, operácia sa týka všetkých záznamov
      */
-    public function processRequest($method, $id)
+    public function processRequest(string $method, ?string $id): void
     {
         // Ak nie je zadaný identifikátor ($id je null)
         if ($id === null) {
             // Ak je metóda GET, vypíše "index" (získanie všetkých záznamov)
             if ($method === "GET") {
                 echo "index";
-
                 // Ak je metóda POST, vypíše "create" (vytvorenie nového záznamu)
             } elseif ($method === "POST") {
                 echo "create";
+            } else {
+                $this->respondMethodNotAllowed("GET, POST");
             }
+
+            
 
             // Ak je zadaný identifikátor ($id obsahuje hodnotu)
         } else {
@@ -44,8 +47,16 @@ class TaskController
                     // Ak je metóda DELETE, vypíše "delete" a ID záznamu (vymazanie konkrétneho záznamu)
                     echo "delete" . " " . $id;
                     break;
+
+                default:
+                    $this->respondMethodNotAllowed("GET, PATCH, DELETE");
             }
         }
+    }
+    private function respondMethodNotAllowed(string $allowed_methods): void
+    {
+        http_response_code(405);
+        header("Allow: " . $allowed_methods);
     }
 }
 

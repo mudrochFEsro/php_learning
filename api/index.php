@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
 // Načíta automatický načítač Composeru, aby bolo možné používať nainštalované balíky a závislosti
 require dirname(__DIR__) . "/vendor/autoload.php";
+
+set_exception_handler("ErrorHandler::handleExeption");
 
 // Získa cestu URL z požiadavky a rozloží ju na časti
 $path = parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH);
@@ -25,6 +28,8 @@ if ($resource !== "tasks") {
     http_response_code(404);
     exit; // Ukončí skript po nastavení 404
 }
+
+header("Content-type: application/json; charset=UTF-8");
 
 // Vytvorí novú inštanciu TaskController
 $controller = new TaskController;
